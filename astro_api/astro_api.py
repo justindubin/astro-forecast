@@ -5,8 +5,6 @@ import time
 from enum import Enum
 from typing import Union
 
-BASE_URL = "https://astrosphericpublicaccess.azurewebsites.net/api"
-
 
 class AstroDtype(Enum):
     FORECAST = "GetForecastData_V1"
@@ -26,7 +24,8 @@ def fetch_astro_data(dtype: Union[AstroDtype | str], loc_coords: tuple, ms_since
         ms_since_epoch = round(time.time() * 1000)
 
     # Build the API URL and construct the parameter container
-    api_url = BASE_URL + "/" + str(dtype.value)
+    base_url = "https://astrosphericpublicaccess.azurewebsites.net/api"
+    api_url = base_url + "/" + str(dtype.value)
     latitude, longitude = loc_coords[0], loc_coords[1]
     api_data = {
         "Latitude": latitude,
@@ -55,7 +54,8 @@ def fetch_astro_data(dtype: Union[AstroDtype | str], loc_coords: tuple, ms_since
         return {}
 
 
-LATITUDE = 30.218910
-LONGITUDE = -97.854607
-MS_SINCE_EPOCH = int(time.time() * 1000)
-fetch_astro_data(dtype=AstroDtype.SKY_MAP, loc_coords=(LATITUDE, LONGITUDE))
+if __name__ == "__main__":
+    LATITUDE = 30.218910
+    LONGITUDE = -97.854607
+    MS_SINCE_EPOCH = int(time.time() * 1000)
+    data = fetch_astro_data(dtype=AstroDtype.SKY_MAP, loc_coords=(LATITUDE, LONGITUDE))

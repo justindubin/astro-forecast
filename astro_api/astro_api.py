@@ -23,9 +23,11 @@ def fetch_astro_data(dtype: Union[AstroDtype | str], loc_coords: tuple, ms_since
     if ms_since_epoch is None:
         ms_since_epoch = round(time.time() * 1000)
 
-    # Build the API URL and construct the parameter container
+    # Build the API URL
     base_url = "https://astrosphericpublicaccess.azurewebsites.net/api"
     api_url = base_url + "/" + str(dtype.value)
+
+    # Parse the user inputs
     latitude, longitude = loc_coords[0], loc_coords[1]
     api_data = {
         "Latitude": latitude,
@@ -45,7 +47,7 @@ def fetch_astro_data(dtype: Union[AstroDtype | str], loc_coords: tuple, ms_since
     # Handle response from API
     if response.status_code == 200:
         response_text = response.text
-        if response.text.startswith('\ufeff'):
+        if response_text.startswith('\ufeff'):
             response_text = response.text[1:]
         astro_data = json.loads(response_text)
         return astro_data
@@ -58,4 +60,6 @@ if __name__ == "__main__":
     LATITUDE = 30.218910
     LONGITUDE = -97.854607
     MS_SINCE_EPOCH = int(time.time() * 1000)
-    data = fetch_astro_data(dtype=AstroDtype.SKY_MAP, loc_coords=(LATITUDE, LONGITUDE))
+    forecast_data = fetch_astro_data(dtype=AstroDtype.FORECAST, loc_coords=(LATITUDE, LONGITUDE))
+    skymap_data = fetch_astro_data(dtype=AstroDtype.SKY_MAP, loc_coords=(LATITUDE, LONGITUDE))
+    pass

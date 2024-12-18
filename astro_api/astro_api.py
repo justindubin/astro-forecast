@@ -1,20 +1,15 @@
-import requests
+import os
 import json
-import yaml
 import time
+import requests
 from enum import Enum
 from typing import Union
+from dotenv import load_dotenv
 
 
 class AstroDtype(Enum):
     FORECAST = "GetForecastData_V1"
     SKY_MAP = "GetSky_V1"
-
-
-def fetch_api_key() -> str:
-    with open("../auth/api_key.yaml", 'r') as f:
-        api_key = yaml.safe_load(f)["API_KEY"]
-        return api_key
 
 
 def fetch_astro_data(dtype: Union[AstroDtype | str], loc_coords: tuple, ms_since_epoch=None) -> dict:
@@ -32,7 +27,7 @@ def fetch_astro_data(dtype: Union[AstroDtype | str], loc_coords: tuple, ms_since
     api_data = {
         "Latitude": latitude,
         "Longitude": longitude,
-        "APIKey": fetch_api_key(),
+        "APIKey": os.getenv('API_KEY'),
     }
     if dtype == AstroDtype.SKY_MAP:
         api_data["MSSinceEpoch"] = ms_since_epoch
@@ -57,6 +52,7 @@ def fetch_astro_data(dtype: Union[AstroDtype | str], loc_coords: tuple, ms_since
 
 
 if __name__ == "__main__":
+    load_dotenv()
     LATITUDE = 30.218910
     LONGITUDE = -97.854607
     MS_SINCE_EPOCH = int(time.time() * 1000)

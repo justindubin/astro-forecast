@@ -23,10 +23,9 @@ def fetch_astro_data(dtype: Union[AstroDtype | str], loc_coords: tuple, ms_since
     api_url = base_url + "/" + str(dtype.value)
 
     # Parse the user inputs
-    latitude, longitude = loc_coords[0], loc_coords[1]
     api_data = {
-        "Latitude": latitude,
-        "Longitude": longitude,
+        "Latitude": loc_coords[0],
+        "Longitude": loc_coords[1],
         "APIKey": os.getenv('API_KEY'),
     }
     if dtype == AstroDtype.SKY_MAP:
@@ -55,7 +54,6 @@ if __name__ == "__main__":
     load_dotenv()
     LATITUDE = 30.218910
     LONGITUDE = -97.854607
-    MS_SINCE_EPOCH = int(time.time() * 1000)
     forecast_data = fetch_astro_data(dtype=AstroDtype.FORECAST, loc_coords=(LATITUDE, LONGITUDE))
     skymap_data = fetch_astro_data(dtype=AstroDtype.SKY_MAP, loc_coords=(LATITUDE, LONGITUDE))
     pass

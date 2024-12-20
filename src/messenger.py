@@ -14,3 +14,9 @@ def text_justin(body_text: str):
         body=body_text,
     )
     print(message.sid)
+
+
+class Messenger:
+
+    def __init__(self):
+        pass

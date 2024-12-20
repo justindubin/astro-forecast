@@ -45,5 +45,6 @@ def fetch_data(dtype: Union[ApiDtype | str], ms_since_epoch=None) -> dict:
         astro_data = json.loads(response_text)
         return astro_data
     else:
+        # ToDo: This should get picked up by a logger or custom exception
         print(response.content.decode('utf-8'))
         return {}

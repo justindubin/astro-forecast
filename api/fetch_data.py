@@ -4,17 +4,16 @@ import time
 import requests
 from enum import Enum
 from typing import Union
-from dotenv import load_dotenv
 
 
-class AstroDtype(Enum):
+class ApiDtype(Enum):
     FORECAST = "GetForecastData_V1"
     SKY_MAP = "GetSky_V1"
 
 
-def fetch_astro_data(dtype: Union[AstroDtype | str], loc_coords: tuple, ms_since_epoch=None) -> dict:
+def fetch_data(dtype: Union[ApiDtype | str], ms_since_epoch=None) -> dict:
     if type(dtype) is str:
-        dtype = AstroDtype[dtype.upper()]
+        dtype = ApiDtype[dtype.upper()]
     if ms_since_epoch is None:
         ms_since_epoch = round(time.time() * 1000)
 
@@ -24,11 +23,11 @@ def fetch_astro_data(dtype: Union[AstroDtype | str], loc_coords: tuple, ms_since
 
     # Parse the user inputs
     api_data = {
-        "Latitude": loc_coords[0],
-        "Longitude": loc_coords[1],
+        "Latitude": os.getenv('LATITUDE'),
+        "Longitude": os.getenv('LONGITUDE'),
         "APIKey": os.getenv('API_KEY'),
     }
-    if dtype == AstroDtype.SKY_MAP:
+    if dtype == ApiDtype.SKY_MAP:
         api_data["MSSinceEpoch"] = ms_since_epoch
 
     # Convert data to JSON format
@@ -48,12 +47,3 @@ def fetch_astro_data(dtype: Union[AstroDtype | str], loc_coords: tuple, ms_since
     else:
         print(response.content.decode('utf-8'))
         return {}
-
-
-if __name__ == "__main__":
-    load_dotenv()
-    LATITUDE = 30.218910
-    LONGITUDE = -97.854607
-    forecast_data = fetch_astro_data(dtype=AstroDtype.FORECAST, loc_coords=(LATITUDE, LONGITUDE))
-    skymap_data = fetch_astro_data(dtype=AstroDtype.SKY_MAP, loc_coords=(LATITUDE, LONGITUDE))
-    pass

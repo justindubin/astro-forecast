@@ -2,6 +2,7 @@
 from PySide2 import QtWidgets, QtCore, QtGui
 
 from src.configuration import load_env_vars, update_env_vars
+from src.messaging import text_justin
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -16,4 +17,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Create a QThreadPool for threading operations
         self.threadpool = QtCore.QThreadPool()
+
+        # Send a test message to my phone
+        text_justin('this is a test of the messaging service')
 

@@ -3,7 +3,7 @@ import os
 
 from dotenv import load_dotenv, set_key
 
-from src.constants import DOTENV_PATH
+from src.constants import DOTENV_PATH, ENV_VAR_NAMES
 
 
 def verify_dotenv(func):
@@ -17,7 +17,8 @@ def verify_dotenv(func):
 
 def generate_dotenv():
     with open(DOTENV_PATH, 'w') as f:
-        f.write("API_KEY=''\nLATITUDE=''\nLONGITUDE=''")
+        for env_var_name in ENV_VAR_NAMES:
+            f.write(f"{env_var_name}=''\n")
 
 
 @verify_dotenv

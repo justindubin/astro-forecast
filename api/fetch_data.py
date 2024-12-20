@@ -25,7 +25,7 @@ def fetch_data(dtype: Union[ApiDtype | str], ms_since_epoch=None) -> dict:
     api_data = {
         "Latitude": os.getenv('LATITUDE'),
         "Longitude": os.getenv('LONGITUDE'),
-        "APIKey": os.getenv('API_KEY'),
+        "APIKey": os.getenv('ASTRO_API_KEY'),
     }
     if dtype == ApiDtype.SKY_MAP:
         api_data["MSSinceEpoch"] = ms_since_epoch
